@@ -3,7 +3,7 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, Fragment } from 'react';
-import {cartShowActions} from './store/cartShow'
+import { sendCartItems, fetchCartItems } from './store/cart-actions';
 import Notification from './components/UI/Notification';
 
 let isInital =  true;
@@ -15,38 +15,18 @@ function App() {
   const cartItems = useSelector(state => state.cart.cartItems);
 
   useEffect(() => {
-    const sendCartItems = async() => {
-      dispatch(cartShowActions.showLoader({
-        status:'pending',
-        title:'Sending request...',
-        message:'Sending cart items'
-      }))
-      const respone = await fetch('https://shopping-app-afe0b-default-rtdb.firebaseio.com/cart.json', {
-        method:'PUT',
-        body: JSON.stringify(cart),
-  
-      })
-      if(!respone.ok) {
-        throw new Error('Sending cart data failed');
-      }
-      dispatch(cartShowActions.showLoader({
-        status:'success',
-        title:'suceess.',
-        message:'sent cart items'
-      }))
-      
-    }
+    dispatch(fetchCartItems())
+  }, [dispatch])
+
+  useEffect(() => {    
     if(isInital) {
-      isInital = false
+      isInital = false;
       return;
     }
-   sendCartItems().catch(error => {
-    dispatch(cartShowActions.showLoader({
-      status:'Error',
-      title:'Error!.',
-      message:'sending cart data failed'
-    }))
-   });
+    if(cart.changed) {
+    dispatch(sendCartItems(cart));
+    }
+    
   },[cart,dispatch])
   return (
     <Fragment>
