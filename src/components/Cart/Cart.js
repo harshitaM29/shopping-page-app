@@ -8,7 +8,7 @@ const Cart = (props) => {
       <h2>Your Shopping Cart</h2>
       <ul>
         {props.items.map((item) => 
-        <CartItem id={item.id} title={item.title} quantity={item.quantity} price={item.price}/>
+        <CartItem id={item.id} title={item.title} quantity={item.quantity} price={item.price} totalPrice={item.totalPrice}/>
         )}
       </ul>
     </Card>

@@ -11,15 +11,14 @@ const CartItem = (props) => {
  const removeFromCartHandler = () => {
   dispatch(cartActions.removeFromCart(props.id));
  }
-let total = 0;
-total = props.price * props.quantity;
+
 
   return (
     <li className={classes.item}>
       <header>
         <h3>{props.title}</h3>
         <div className={classes.price}>
-          ${total.toFixed(2)}{' '}
+          ${props.totalPricr.toFixed(2)}{' '}
           <span className={classes.itemprice}>
             (${props.price.toFixed(2)}/item)
           price
